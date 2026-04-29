@@ -8,6 +8,7 @@ import { GravitySimulation } from "@/components/bioreactor/gravity-simulation"
 import { CameraFeed } from "@/components/bioreactor/camera-feed"
 import { ControlPanel } from "@/components/bioreactor/control-panel"
 import { DataTable } from "@/components/bioreactor/data-table"
+import { ReportsPage } from "@/components/bioreactor/reports-page"
 import { Menu, X } from "lucide-react"
 
 export default function BioreactorPortal() {
@@ -81,6 +82,102 @@ export default function BioreactorPortal() {
     }
   }
 
+  const renderDashboard = () => (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+      {/* Left Column - Plant & Environment */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">BİTKİ VE ORTAM SEÇİMİ</h2>
+        <PlantSelection
+          selectedPlant={selectedPlant}
+          onPlantChange={setSelectedPlant}
+        />
+        <GravitySimulation
+          selectedEnvironment={selectedEnvironment}
+          onEnvironmentChange={setSelectedEnvironment}
+          customGravity={customGravity}
+          onCustomGravityChange={setCustomGravity}
+        />
+      </div>
+
+      {/* Center Column - Camera & Stats */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">CANLI GÖRÜNTÜ VE DURUM</h2>
+        <CameraFeed
+          temperature={temperature}
+          humidity={humidity}
+          co2Level={co2Level}
+          phLevel={phLevel}
+        />
+      </div>
+
+      {/* Right Column - Controls & Data */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-foreground">REAKTÖR KONTROLLERİ VE ANALİZ</h2>
+        <ControlPanel
+          isAutoMode={isAutoMode}
+          onAutoModeToggle={setIsAutoMode}
+          irrigationFrequency={irrigationFrequency}
+          onIrrigationFrequencyChange={setIrrigationFrequency}
+          nutrientN={nutrientN}
+          onNutrientNChange={setNutrientN}
+          nutrientP={nutrientP}
+          onNutrientPChange={setNutrientP}
+          nutrientK={nutrientK}
+          onNutrientKChange={setNutrientK}
+          rpm={rpm}
+          onRpmChange={setRpm}
+          orientation={orientation}
+          onOrientationChange={setOrientation}
+        />
+        <DataTable
+          mode={getEnvironmentLabel()}
+          day={4}
+          innerTemp={temperature}
+          outerTemp={21}
+          humidity={humidity}
+          gravity={getGravityString()}
+          nutrientLevel={82}
+        />
+      </div>
+    </div>
+  )
+
+  const menuLabels: Record<string, string> = {
+    anasayfa: "Anasayfa",
+    raporlar: "Raporlar",
+    ayarlar: "Ayarlar",
+    profil: "Profil",
+    yardim: "Yardım",
+  }
+
+  const renderComingSoonPage = (item: string) => (
+    <section className="rounded-2xl border border-border bg-card p-8">
+      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Modül Durumu</p>
+      <h2 className="mt-2 text-2xl font-semibold text-foreground">
+        {menuLabels[item] ?? "Bu sayfa"} yakında
+      </h2>
+      <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+        Bu bölüm henüz aktif değil. İçerik hazır olduğunda burada görüntülenecek.
+      </p>
+    </section>
+  )
+
+  const renderMainPanel = () => {
+    switch (activeMenuItem) {
+      case "anasayfa":
+        return renderDashboard()
+      case "raporlar":
+        return <ReportsPage />
+      default:
+        return renderComingSoonPage(activeMenuItem)
+    }
+  }
+
+  const handleMenuItemClick = (item: string) => {
+    setActiveMenuItem(item)
+    setSidebarOpen(false)
+  }
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* Mobile Sidebar Overlay */}
@@ -97,7 +194,7 @@ export default function BioreactorPortal() {
         transform transition-transform duration-300 lg:transform-none
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
-        <Sidebar activeItem={activeMenuItem} onItemClick={setActiveMenuItem} />
+        <Sidebar activeItem={activeMenuItem} onItemClick={handleMenuItemClick} />
       </div>
 
       {/* Main Content */}
@@ -114,63 +211,7 @@ export default function BioreactorPortal() {
 
         {/* Main Grid */}
         <main className="flex-1 p-4 lg:p-6 overflow-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-            {/* Left Column - Plant & Environment */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold text-foreground">BİTKİ VE ORTAM SEÇİMİ</h2>
-              <PlantSelection 
-                selectedPlant={selectedPlant} 
-                onPlantChange={setSelectedPlant} 
-              />
-              <GravitySimulation
-                selectedEnvironment={selectedEnvironment}
-                onEnvironmentChange={setSelectedEnvironment}
-                customGravity={customGravity}
-                onCustomGravityChange={setCustomGravity}
-              />
-            </div>
-
-            {/* Center Column - Camera & Stats */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold text-foreground">CANLI GÖRÜNTÜ VE DURUM</h2>
-              <CameraFeed
-                temperature={temperature}
-                humidity={humidity}
-                co2Level={co2Level}
-                phLevel={phLevel}
-              />
-            </div>
-
-            {/* Right Column - Controls & Data */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-bold text-foreground">REAKTÖR KONTROLLERİ VE ANALİZ</h2>
-              <ControlPanel
-                isAutoMode={isAutoMode}
-                onAutoModeToggle={setIsAutoMode}
-                irrigationFrequency={irrigationFrequency}
-                onIrrigationFrequencyChange={setIrrigationFrequency}
-                nutrientN={nutrientN}
-                onNutrientNChange={setNutrientN}
-                nutrientP={nutrientP}
-                onNutrientPChange={setNutrientP}
-                nutrientK={nutrientK}
-                onNutrientKChange={setNutrientK}
-                rpm={rpm}
-                onRpmChange={setRpm}
-                orientation={orientation}
-                onOrientationChange={setOrientation}
-              />
-              <DataTable
-                mode={getEnvironmentLabel()}
-                day={4}
-                innerTemp={temperature}
-                outerTemp={21}
-                humidity={humidity}
-                gravity={getGravityString()}
-                nutrientLevel={82}
-              />
-            </div>
-          </div>
+          {renderMainPanel()}
         </main>
       </div>
     </div>
