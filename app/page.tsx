@@ -8,7 +8,7 @@ import { GravitySimulation } from "@/components/bioreactor/gravity-simulation"
 import { CameraFeed } from "@/components/bioreactor/camera-feed"
 import { ControlPanel } from "@/components/bioreactor/control-panel"
 import { DataTable } from "@/components/bioreactor/data-table"
-import { ReportsPage } from "@/components/bioreactor/reports-page"
+import { ReportsPage } from "../components/bioreactor/reports-page"
 import { Menu, X } from "lucide-react"
 
 export default function BioreactorPortal() {
