@@ -28,6 +28,13 @@ export function Header({
 }: HeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
+  const userInitials = currentUserName
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase()
 
   return (
     <header className="relative h-16 bg-card border-b border-border flex items-center justify-between px-6">
@@ -84,8 +91,9 @@ export function Header({
             className="flex items-center gap-2"
           >
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#86bc25] to-green-900 flex items-center justify-center">
-              <span className="text-white text-sm font-bold">{currentUserName.slice(0, 2).toUpperCase()}</span>
+              <span className="text-white text-sm font-bold">{userInitials}</span>
             </div>
+            <span className="hidden text-sm font-medium text-foreground xl:inline">{currentUserName}</span>
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </button>
 

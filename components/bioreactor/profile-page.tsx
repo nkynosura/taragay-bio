@@ -13,13 +13,17 @@ const profileConfig = {
     permission: "Admin",
     completedExperiments: 28,
     sessionHours: 316,
+    education:
+      "Yalova Üniversitesi - Endüstri Mühendisliği. Operasyonel optimizasyon ve süreç yönetimi odaklı.",
   },
   Musa: {
-    fullName: "Musa Taragay",
-    role: "Mekanik ve Sistem Mimarisi",
+    fullName: "Musa Seyidoğlu",
+    role: "Mekanik ve Sistem Mimarisi Sorumlusu",
     permission: "Editor",
     completedExperiments: 17,
     sessionHours: 214,
+    education:
+      "Yalova Üniversitesi - Makine Mühendisliği. Mekanik tasarım, 3D modelleme ve sistem mimarisi odaklı.",
   },
 }
 
@@ -70,7 +74,7 @@ export function ProfilePage({ currentUserName }: ProfilePageProps) {
           <h3 className="text-sm font-semibold text-foreground">Eğitim Bilgisi</h3>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          Yalova Üniversitesi - Makine Mühendisliği, biyosistem optimizasyonu ve süreç tasarımı odaklı.
+          {profile.education}
         </p>
       </div>
     </section>

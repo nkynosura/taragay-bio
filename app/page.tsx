@@ -15,9 +15,27 @@ import { Menu, X } from "lucide-react"
 
 type UserName = "Nisa" | "Musa"
 
-const users: Record<UserName, { password: string; role: "Admin" | "Editor" }> = {
-  Nisa: { password: "4691", role: "Admin" },
-  Musa: { password: "4691", role: "Editor" },
+const users: Record<
+  UserName,
+  {
+    password: string
+    role: "Admin" | "Editor"
+    fullName: string
+    loginAliases: string[]
+  }
+> = {
+  Nisa: {
+    password: "4691",
+    role: "Admin",
+    fullName: "Nisa Nur Keklik",
+    loginAliases: ["Nisa", "Nisa Nur Keklik"],
+  },
+  Musa: {
+    password: "4691",
+    role: "Editor",
+    fullName: "Musa Seyidoğlu",
+    loginAliases: ["Musa", "Musa Seyidoğlu"],
+  },
 }
 
 export default function BioreactorPortal() {
@@ -195,15 +213,17 @@ export default function BioreactorPortal() {
   }
 
   const handleLogin = () => {
-    const username = usernameInput.trim() as UserName
-    const isValidUser = username in users
+    const normalizedInput = usernameInput.trim().toLocaleLowerCase("tr")
+    const matchedEntry = (Object.entries(users) as Array<[UserName, (typeof users)[UserName]]>).find(
+      ([, user]) => user.loginAliases.some((alias) => alias.toLocaleLowerCase("tr") === normalizedInput),
+    )
 
-    if (!isValidUser || users[username].password !== passwordInput.trim()) {
+    if (!matchedEntry || matchedEntry[1].password !== passwordInput.trim()) {
       setAuthError("Geçersiz kullanıcı adı veya şifre.")
       return
     }
 
-    setCurrentUser(username)
+    setCurrentUser(matchedEntry[0])
     setAuthError("")
     setActiveMenuItem("anasayfa")
     setPasswordInput("")
@@ -220,7 +240,7 @@ export default function BioreactorPortal() {
   const handleSwitchUser = () => {
     const nextUser = currentUser === "Nisa" ? "Musa" : "Nisa"
     setCurrentUser(null)
-    setUsernameInput(nextUser)
+    setUsernameInput(users[nextUser].fullName)
     setPasswordInput("")
     setAuthError("Kullanıcı değiştirildi. Şifreyi girerek devam edin.")
     setSidebarOpen(false)
@@ -244,7 +264,7 @@ export default function BioreactorPortal() {
             <input
               value={usernameInput}
               onChange={(event) => setUsernameInput(event.target.value)}
-              placeholder="Kullanıcı adı (Nisa / Musa)"
+              placeholder="Kullanıcı adı (Nisa Nur Keklik / Musa Seyidoğlu)"
               className="w-full rounded-lg border border-border bg-background/70 px-3 py-2 text-sm text-foreground outline-none ring-[#86bc25] focus:ring-2"
             />
             <input
@@ -265,13 +285,15 @@ export default function BioreactorPortal() {
           </div>
 
           <div className="mt-4 rounded-lg border border-border/70 bg-background/40 p-3 text-xs text-muted-foreground">
-            <p>Nisa / 4691</p>
-            <p>Musa / 4691</p>
+            <p>Nisa Nur Keklik / 4691</p>
+            <p>Musa Seyidoğlu / 4691</p>
           </div>
         </section>
       </div>
     )
   }
+
+  const currentUserDisplayName = users[currentUser]?.fullName ?? "Nisa Nur Keklik"
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -297,7 +319,7 @@ export default function BioreactorPortal() {
         <Header
           isDarkMode={isDarkMode}
           onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
-          currentUserName={currentUser}
+          currentUserName={currentUserDisplayName}
           onSwitchUser={handleSwitchUser}
           onGoProfile={() => setActiveMenuItem("profil")}
           onLogout={handleLogout}
