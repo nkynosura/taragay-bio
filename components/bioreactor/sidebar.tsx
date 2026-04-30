@@ -21,11 +21,12 @@ export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
     <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col min-h-screen">
       {/* Logo */}
       <div className="p-6">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold">
-            <span className="text-primary">TGY</span>{" "}
-            <span className="text-sidebar-foreground">BIOS</span>
-          </span>
+        <div className="rounded-xl border border-sidebar-border/70 bg-sidebar-accent/20 p-3 backdrop-blur">
+          <img
+            src="/taragay-logo.png"
+            alt="Taragay Bio Logo"
+            className="h-12 w-auto object-contain"
+          />
         </div>
       </div>
 

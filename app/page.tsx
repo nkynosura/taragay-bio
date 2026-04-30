@@ -9,12 +9,24 @@ import { CameraFeed } from "@/components/bioreactor/camera-feed"
 import { ControlPanel } from "@/components/bioreactor/control-panel"
 import { DataTable } from "@/components/bioreactor/data-table"
 import { ReportsPage } from "../components/bioreactor/reports-page"
+import { ProfilePage } from "@/components/bioreactor/profile-page"
 import { Menu, X } from "lucide-react"
+
+type UserName = "Nisa" | "Musa"
+
+const users: Record<UserName, { password: string; role: "Admin" | "Editor" }> = {
+  Nisa: { password: "4691", role: "Admin" },
+  Musa: { password: "4691", role: "Editor" },
+}
 
 export default function BioreactorPortal() {
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [activeMenuItem, setActiveMenuItem] = useState("anasayfa")
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState<UserName | null>(null)
+  const [usernameInput, setUsernameInput] = useState("")
+  const [passwordInput, setPasswordInput] = useState("")
+  const [authError, setAuthError] = useState("")
   
   // Plant Selection
   const [selectedPlant, setSelectedPlant] = useState("marul")
@@ -168,6 +180,8 @@ export default function BioreactorPortal() {
         return renderDashboard()
       case "raporlar":
         return <ReportsPage />
+      case "profil":
+        return <ProfilePage currentUserName={currentUser ?? "Nisa"} />
       default:
         return renderComingSoonPage(activeMenuItem)
     }
@@ -176,6 +190,81 @@ export default function BioreactorPortal() {
   const handleMenuItemClick = (item: string) => {
     setActiveMenuItem(item)
     setSidebarOpen(false)
+  }
+
+  const handleLogin = () => {
+    const username = usernameInput.trim() as UserName
+    const isValidUser = username in users
+
+    if (!isValidUser || users[username].password !== passwordInput.trim()) {
+      setAuthError("Geçersiz kullanıcı adı veya şifre.")
+      return
+    }
+
+    setCurrentUser(username)
+    setAuthError("")
+    setActiveMenuItem("anasayfa")
+    setPasswordInput("")
+  }
+
+  const handleLogout = () => {
+    setCurrentUser(null)
+    setUsernameInput("")
+    setPasswordInput("")
+    setAuthError("")
+    setSidebarOpen(false)
+  }
+
+  const handleSwitchUser = () => {
+    const nextUser = currentUser === "Nisa" ? "Musa" : "Nisa"
+    setCurrentUser(null)
+    setUsernameInput(nextUser)
+    setPasswordInput("")
+    setAuthError("Kullanıcı değiştirildi. Şifreyi girerek devam edin.")
+    setSidebarOpen(false)
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <section className="w-full max-w-md rounded-2xl border border-border bg-card/80 p-6 shadow-2xl backdrop-blur">
+          <div className="mb-5 text-center">
+            <img src="/taragay-logo.png" alt="Taragay Bio Logo" className="mx-auto h-14 w-auto object-contain" />
+            <h1 className="mt-4 text-2xl font-semibold text-foreground">Taragay-Bio Giriş</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Dashboard erişimi için oturum açın.</p>
+          </div>
+
+          <div className="space-y-3">
+            <input
+              value={usernameInput}
+              onChange={(event) => setUsernameInput(event.target.value)}
+              placeholder="Kullanıcı adı (Nisa / Musa)"
+              className="w-full rounded-lg border border-border bg-background/70 px-3 py-2 text-sm text-foreground outline-none ring-[#86bc25] focus:ring-2"
+            />
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(event) => setPasswordInput(event.target.value)}
+              placeholder="Şifre"
+              className="w-full rounded-lg border border-border bg-background/70 px-3 py-2 text-sm text-foreground outline-none ring-[#86bc25] focus:ring-2"
+            />
+            {authError && <p className="text-xs text-amber-300">{authError}</p>}
+            <button
+              type="button"
+              onClick={handleLogin}
+              className="w-full rounded-lg bg-[#86bc25] px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-[#86bc25]/90"
+            >
+              Giriş Yap
+            </button>
+          </div>
+
+          <div className="mt-4 rounded-lg border border-border/70 bg-background/40 p-3 text-xs text-muted-foreground">
+            <p>Nisa / 4691</p>
+            <p>Musa / 4691</p>
+          </div>
+        </section>
+      </div>
+    )
   }
 
   return (
@@ -199,7 +288,14 @@ export default function BioreactorPortal() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-        <Header isDarkMode={isDarkMode} onToggleDarkMode={() => setIsDarkMode(!isDarkMode)} />
+        <Header
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+          currentUserName={currentUser}
+          onSwitchUser={handleSwitchUser}
+          onGoProfile={() => setActiveMenuItem("profil")}
+          onLogout={handleLogout}
+        />
         
         {/* Mobile Menu Button */}
         <button
