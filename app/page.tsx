@@ -157,7 +157,6 @@ export default function BioreactorPortal() {
   const menuLabels: Record<string, string> = {
     anasayfa: "Anasayfa",
     raporlar: "Raporlar",
-    ayarlar: "Ayarlar",
     profil: "Profil",
     yardim: "Yardım",
   }
