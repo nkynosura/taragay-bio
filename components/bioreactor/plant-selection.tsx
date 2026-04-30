@@ -1,6 +1,7 @@
 "use client"
 
 const plants = [
+  { id: "arpa", name: "Arpa", image: "🌾" },
   { id: "marul", name: "Marul", image: "🥬" },
   { id: "domates", name: "Domates", image: "🍅" },
   { id: "algler", name: "Algler", image: "🌿" },

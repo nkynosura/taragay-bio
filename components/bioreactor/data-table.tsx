@@ -3,23 +3,30 @@
 interface DataTableProps {
   mode: string
   day: number
+  plant: string
   innerTemp: number
   outerTemp: number
   humidity: number
   gravity: string
   nutrientLevel: number
+  rootLength: string
+  growthRate: string
 }
 
 export function DataTable({
   mode,
   day,
+  plant,
   innerTemp,
   outerTemp,
   humidity,
   gravity,
   nutrientLevel,
+  rootLength,
+  growthRate,
 }: DataTableProps) {
   const data = [
+    { metric: "Bitki", value: plant },
     { metric: "Mod", value: mode },
     { metric: "Gün", value: day.toString() },
     { metric: "İç Sıcaklık", value: `${innerTemp.toFixed(1)}°C` },
@@ -27,6 +34,8 @@ export function DataTable({
     { metric: "Nem Oranı", value: `%${humidity}` },
     { metric: "Kütle Çekimi", value: gravity },
     { metric: "Besin Seviyesi", value: `%${nutrientLevel}` },
+    { metric: "Kök Uzunluğu", value: rootLength },
+    { metric: "Büyüme Hızı", value: growthRate },
   ]
 
   return (

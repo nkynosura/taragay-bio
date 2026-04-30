@@ -17,25 +17,15 @@ export function CameraFeed({ temperature, humidity, co2Level, phLevel }: CameraF
         <div className="bg-primary px-4 py-2">
           <h3 className="text-sm font-semibold text-primary-foreground">CANLI KAMERA BESLEMESİ</h3>
         </div>
-        <div className="relative aspect-video bg-gradient-to-b from-gray-800 to-gray-900">
-          {/* Camera simulation with plant imagery */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative w-full h-full">
-              {/* LED strips on sides */}
-              <div className="absolute left-2 top-0 bottom-0 w-1 bg-gradient-to-b from-white via-blue-200 to-white opacity-80" />
-              <div className="absolute right-2 top-0 bottom-0 w-1 bg-gradient-to-b from-white via-blue-200 to-white opacity-80" />
-              
-              {/* Plant area */}
-              <div className="absolute inset-8 bg-gradient-to-b from-green-900/30 to-green-800/50 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl mb-2">🥬</div>
-                  <p className="text-white/80 text-sm bg-black/50 px-4 py-2 rounded-lg">
-                    Kamera İç görünümü
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="relative aspect-video bg-black">
+          <video
+            className="h-full w-full rounded-b-xl object-cover"
+            src="/IMG_1374.mov"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
         </div>
         
         {/* Camera Controls */}

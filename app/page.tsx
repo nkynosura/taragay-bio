@@ -48,7 +48,7 @@ export default function BioreactorPortal() {
   const [authError, setAuthError] = useState("")
   
   // Plant Selection
-  const [selectedPlant, setSelectedPlant] = useState("marul")
+  const [selectedPlant, setSelectedPlant] = useState("arpa")
   
   // Gravity Simulation
   const [selectedEnvironment, setSelectedEnvironment] = useState("ay")
@@ -65,7 +65,7 @@ export default function BioreactorPortal() {
   
   // Sensor Data
   const [temperature, setTemperature] = useState(24.1)
-  const [humidity, setHumidity] = useState(66)
+  const [humidity, setHumidity] = useState(62)
   const [co2Level, setCo2Level] = useState(1198)
   const [phLevel, setPhLevel] = useState(5.7)
 
@@ -80,9 +80,9 @@ export default function BioreactorPortal() {
   // Simulate real-time data changes
   useEffect(() => {
     const interval = setInterval(() => {
-      setTemperature(prev => prev + (Math.random() - 0.5) * 0.2)
-      setHumidity(prev => Math.max(50, Math.min(80, prev + Math.floor((Math.random() - 0.5) * 2))))
-      setCo2Level(prev => Math.max(1000, Math.min(1400, prev + Math.floor((Math.random() - 0.5) * 20))))
+      setTemperature((prev) => Math.max(23.5, Math.min(24.8, prev + (Math.random() - 0.5) * 0.3)))
+      setHumidity((prev) => Math.max(50, Math.min(65, prev + Math.floor((Math.random() - 0.5) * 3))))
+      setCo2Level((prev) => Math.max(1100, Math.min(1250, prev + Math.floor((Math.random() - 0.5) * 24))))
     }, 3000)
     return () => clearInterval(interval)
   }, [])
@@ -110,6 +110,19 @@ export default function BioreactorPortal() {
       case "mars": return "0.38g"
       case "iss": return "Microg"
       default: return `${customGravity.toFixed(2)}g`
+    }
+  }
+
+  const getPlantLabel = () => {
+    switch (selectedPlant) {
+      case "arpa":
+        return "Arpa (Hordeum vulgare)"
+      case "domates":
+        return "Domates"
+      case "algler":
+        return "Algler"
+      default:
+        return "Arpa (Hordeum vulgare)"
     }
   }
 
@@ -163,11 +176,14 @@ export default function BioreactorPortal() {
         <DataTable
           mode={getEnvironmentLabel()}
           day={4}
+          plant={getPlantLabel()}
           innerTemp={temperature}
           outerTemp={21}
           humidity={humidity}
           gravity={getGravityString()}
           nutrientLevel={82}
+          rootLength="18.4 mm"
+          growthRate="4.2 mm/gün"
         />
       </div>
     </div>
