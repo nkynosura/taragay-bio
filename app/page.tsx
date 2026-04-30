@@ -218,8 +218,13 @@ export default function BioreactorPortal() {
       ([, user]) => user.loginAliases.some((alias) => alias.toLocaleLowerCase("tr") === normalizedInput),
     )
 
-    if (!matchedEntry || matchedEntry[1].password !== passwordInput.trim()) {
-      setAuthError("Geçersiz kullanıcı adı veya şifre.")
+    if (!matchedEntry) {
+      setAuthError("")
+      return
+    }
+
+    if (matchedEntry[1].password !== passwordInput.trim()) {
+      setAuthError("Şifre hatalı.")
       return
     }
 
@@ -242,7 +247,7 @@ export default function BioreactorPortal() {
     setCurrentUser(null)
     setUsernameInput(users[nextUser].fullName)
     setPasswordInput("")
-    setAuthError("Kullanıcı değiştirildi. Şifreyi girerek devam edin.")
+    setAuthError("")
     setSidebarOpen(false)
   }
 
@@ -260,7 +265,7 @@ export default function BioreactorPortal() {
             <p className="mt-1 text-sm text-muted-foreground">Dashboard erişimi için oturum açın.</p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 pb-1">
             <input
               value={usernameInput}
               onChange={(event) => setUsernameInput(event.target.value)}
