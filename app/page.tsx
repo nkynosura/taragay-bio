@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Sidebar } from "@/components/bioreactor/sidebar"
 import { Header } from "@/components/bioreactor/header"
 import { PlantSelection } from "@/components/bioreactor/plant-selection"
@@ -32,7 +32,7 @@ const users: Record<
   },
   Musa: {
     password: "4691",
-    role: "Editor",
+    role: "Admin",
     fullName: "Musa Seyidoğlu",
     loginAliases: ["Musa", "Musa Seyidoğlu"],
   },
@@ -62,12 +62,21 @@ export default function BioreactorPortal() {
   const [nutrientK, setNutrientK] = useState(85)
   const [rpm, setRpm] = useState(12)
   const [orientation, setOrientation] = useState("Dikey")
+  const [showCommandOverlay, setShowCommandOverlay] = useState(false)
+  const [commandOverlayText, setCommandOverlayText] = useState("")
+  const [systemNotice, setSystemNotice] = useState("")
+  const [systemLogs, setSystemLogs] = useState<string[]>([
+    "Nisa Nur Keklik: Sistem dengeleme modu aktifleştirildi",
+    "Musa Seyidoğlu: Motor torku normalize edildi",
+    "Kontrol çekirdeği: Random Walk kalibrasyonu tamamlandı",
+  ])
   
   // Sensor Data
   const [temperature, setTemperature] = useState(24.1)
   const [humidity, setHumidity] = useState(62)
   const [co2Level, setCo2Level] = useState(1198)
   const [phLevel, setPhLevel] = useState(5.7)
+  const criticalAlertCooldownRef = useRef(false)
 
   useEffect(() => {
     if (isDarkMode) {
@@ -86,6 +95,37 @@ export default function BioreactorPortal() {
     }, 3000)
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRpm((prev) => {
+        const delta = (Math.random() - 0.5) * 0.22
+        return Number(Math.max(11.8, Math.min(12.5, prev + delta)).toFixed(1))
+      })
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const isCritical = temperature >= 24.75 || co2Level >= 1235
+    if (!isCritical || criticalAlertCooldownRef.current) {
+      return
+    }
+
+    criticalAlertCooldownRef.current = true
+    setSystemNotice("UYARI: Termal Stabilizasyon Devreye Girdi")
+    setSystemLogs((prev) => [
+      "Musa Seyidoğlu: Motor torku normalize edildi",
+      "Nisa Nur Keklik: Termal dengeleme protokolü devreye alındı",
+      ...prev,
+    ].slice(0, 8))
+
+    const cooldown = setTimeout(() => {
+      criticalAlertCooldownRef.current = false
+    }, 12000)
+
+    return () => clearTimeout(cooldown)
+  }, [temperature, co2Level])
 
   const getEnvironmentLabel = () => {
     switch (selectedEnvironment) {
@@ -126,6 +166,54 @@ export default function BioreactorPortal() {
     }
   }
 
+  const getRootLength = () => {
+    switch (orientation) {
+      case "Yatay":
+        return "17.6 mm"
+      case "45 Derece":
+        return "18.1 mm"
+      default:
+        return "18.4 mm"
+    }
+  }
+
+  const getGrowthRate = () => {
+    switch (orientation) {
+      case "Yatay":
+        return "3.9 mm/gün"
+      case "45 Derece":
+        return "4.0 mm/gün"
+      default:
+        return "4.2 mm/gün"
+    }
+  }
+
+  const isAdminUser = currentUser ? users[currentUser].role === "Admin" : false
+
+  const pushSystemNotice = (message: string) => {
+    setSystemNotice(message)
+    setTimeout(() => setSystemNotice(""), 2200)
+  }
+
+  const handleOrientationCommand = (nextOrientation: string) => {
+    setOrientation(nextOrientation)
+    setCommandOverlayText("KOMUT GÖNDERİLİYOR: Eksen Ayarlanıyor...")
+    setShowCommandOverlay(true)
+    setTimeout(() => {
+      setShowCommandOverlay(false)
+      setSystemLogs((prev) => [`Kinematik sistem: Konum ${nextOrientation} moduna geçirildi`, ...prev].slice(0, 8))
+      pushSystemNotice("Eksen komutu tamamlandı")
+    }, 2000)
+  }
+
+  const handleHardwareParameterChange = (label: string) => {
+    if (!isAdminUser) {
+      return
+    }
+    setSystemLogs((prev) => [`Donanım güncellemesi: ${label} parametresi ayarlandı`, ...prev].slice(0, 8))
+    pushSystemNotice("Donanım Parametresi Güncellendi")
+  }
+
   const renderDashboard = () => (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
       {/* Left Column - Plant & Environment */}
@@ -151,6 +239,9 @@ export default function BioreactorPortal() {
           humidity={humidity}
           co2Level={co2Level}
           phLevel={phLevel}
+          rpm={rpm}
+          showCommandOverlay={showCommandOverlay}
+          commandOverlayText={commandOverlayText}
         />
       </div>
 
@@ -171,7 +262,8 @@ export default function BioreactorPortal() {
           rpm={rpm}
           onRpmChange={setRpm}
           orientation={orientation}
-          onOrientationChange={setOrientation}
+          onOrientationChange={handleOrientationCommand}
+          onHardwareParameterChange={handleHardwareParameterChange}
         />
         <DataTable
           mode={getEnvironmentLabel()}
@@ -182,8 +274,8 @@ export default function BioreactorPortal() {
           humidity={humidity}
           gravity={getGravityString()}
           nutrientLevel={82}
-          rootLength="18.4 mm"
-          growthRate="4.2 mm/gün"
+          rootLength={getRootLength()}
+          growthRate={getGrowthRate()}
         />
       </div>
     </div>
@@ -213,7 +305,7 @@ export default function BioreactorPortal() {
       case "anasayfa":
         return renderDashboard()
       case "raporlar":
-        return <ReportsPage />
+        return <ReportsPage temperature={temperature} photoperiodHours={18} />
       case "profil":
         return <ProfilePage currentUserName={currentUser ?? "Nisa"} />
       case "yardim":
@@ -311,6 +403,7 @@ export default function BioreactorPortal() {
   }
 
   const currentUserDisplayName = users[currentUser]?.fullName ?? "Nisa Nur Keklik"
+  const hasCriticalAlert = temperature >= 24.75 || co2Level >= 1235
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -340,6 +433,8 @@ export default function BioreactorPortal() {
           onSwitchUser={handleSwitchUser}
           onGoProfile={() => setActiveMenuItem("profil")}
           onLogout={handleLogout}
+          notifications={systemLogs}
+          hasCriticalAlert={hasCriticalAlert}
         />
         
         {/* Mobile Menu Button */}
@@ -354,6 +449,12 @@ export default function BioreactorPortal() {
         <main className="flex-1 p-4 lg:p-6 overflow-auto">
           {renderMainPanel()}
         </main>
+
+        {systemNotice && (
+          <div className="pointer-events-none fixed right-6 top-20 z-50 rounded-lg border border-cyan-400/50 bg-black/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.35)]">
+            {systemNotice}
+          </div>
+        )}
       </div>
     </div>
   )

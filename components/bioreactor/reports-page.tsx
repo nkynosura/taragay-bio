@@ -1,22 +1,51 @@
 "use client"
 
+import { useEffect, useMemo, useState } from "react"
 import { BarChart3, CalendarDays, CheckCircle2, Download, TrendingUp } from "lucide-react"
 
-const weeklyReports = [
+const initialFlowData = [
   { day: "Pzt", rootLength: 2 },
   { day: "Sal", rootLength: 5 },
   { day: "Çar", rootLength: 12 },
   { day: "Per", rootLength: 18 },
 ]
 
-const quickMetrics = [
-  { label: "Kök Yönelim Sapması", value: "42.5°" },
-  { label: "Simülasyon Modu", value: "Ay (0.16g)" },
-  { label: "Toplam Fotoperiyot", value: "18h/gün" },
-  { label: "Biyokütle Tahmini", value: "12.4g" },
-]
+interface ReportsPageProps {
+  temperature: number
+  photoperiodHours: number
+}
 
-export function ReportsPage() {
+export function ReportsPage({ temperature, photoperiodHours }: ReportsPageProps) {
+  const [flowData, setFlowData] = useState(initialFlowData)
+  const [biomass, setBiomass] = useState(12.4)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFlowData((prev) => {
+        const nextValue = Number((Math.max(1.2, Math.min(20, prev[prev.length - 1].rootLength + (Math.random() - 0.45) * 1.6))).toFixed(1))
+        const timestamp = new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })
+        return [...prev.slice(1), { day: timestamp, rootLength: nextValue }]
+      })
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const thermalFactor = Math.max(0, temperature - 22) * 0.0009
+    const photoFactor = photoperiodHours * 0.0005
+    setBiomass((prev) => Number((prev + thermalFactor + photoFactor).toFixed(3)))
+  }, [temperature, photoperiodHours])
+
+  const quickMetrics = useMemo(
+    () => [
+      { label: "Kök Yönelim Sapması", value: "42.5°" },
+      { label: "Simülasyon Modu", value: "Ay (0.16g)" },
+      { label: "Toplam Fotoperiyot", value: `${photoperiodHours}h/gün` },
+      { label: "Biyokütle Tahmini", value: `${biomass.toFixed(2)}g` },
+    ],
+    [biomass, photoperiodHours],
+  )
+
   const handleCsvDownload = () => {
     const hourlyData = Array.from({ length: 24 }, (_, hour) => ({
       hour: `${String(hour).padStart(2, "0")}:00`,
@@ -106,7 +135,7 @@ export function ReportsPage() {
           </div>
 
           <div className="space-y-3">
-            {weeklyReports.map((item) => (
+            {flowData.map((item) => (
               <div key={item.day} className="space-y-1">
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>{item.day}</span>
@@ -115,7 +144,7 @@ export function ReportsPage() {
                 <div className="h-2 rounded-full bg-muted">
                   <div
                     className="h-2 rounded-full bg-gradient-to-r from-primary to-cyan-400"
-                    style={{ width: `${(item.rootLength / 18) * 100}%` }}
+                    style={{ width: `${Math.min(100, (item.rootLength / 20) * 100)}%` }}
                   />
                 </div>
               </div>

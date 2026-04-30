@@ -10,13 +10,9 @@ interface HeaderProps {
   onSwitchUser: () => void
   onGoProfile: () => void
   onLogout: () => void
+  notifications: string[]
+  hasCriticalAlert: boolean
 }
-
-const notifications = [
-  "Sıcaklık eşiği aşıldı",
-  "Sulama tamamlandı",
-  "Fotoperiyot döngüsü senkronize edildi",
-]
 
 export function Header({
   isDarkMode,
@@ -25,6 +21,8 @@ export function Header({
   onSwitchUser,
   onGoProfile,
   onLogout,
+  notifications,
+  hasCriticalAlert,
 }: HeaderProps) {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
@@ -64,16 +62,21 @@ export function Header({
           }}
           className="relative p-2 rounded-lg hover:bg-muted transition-colors"
         >
-          <Bell className="w-5 h-5 text-foreground" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full" />
+          <Bell className={`w-5 h-5 ${hasCriticalAlert ? "text-red-400" : "text-foreground"}`} />
+          <span
+            className={`absolute top-1 right-1 h-2 w-2 rounded-full ${
+              hasCriticalAlert ? "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.9)]" : "bg-[#86bc25]"
+            }`}
+          />
         </button>
 
         {showNotifications && (
           <div className="absolute right-24 top-14 z-20 w-72 rounded-xl border border-border bg-card/95 p-3 shadow-xl backdrop-blur">
             <p className="mb-2 text-xs uppercase tracking-wide text-[#86bc25]">Bildirimler</p>
             <ul className="space-y-2">
-              {notifications.map((item) => (
-                <li key={item} className="rounded-md border border-border/80 bg-background/40 px-2 py-1 text-sm text-muted-foreground">
+              {notifications.map((item, index) => (
+                <li key={`${item}-${index}`} className="rounded-md border border-border/80 bg-background/40 px-2 py-1 text-sm text-muted-foreground">
+                  <span className="mr-2 text-[10px] text-[#86bc25]">{String(index + 1).padStart(2, "0")}</span>
                   {item}
                 </li>
               ))}

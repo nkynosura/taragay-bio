@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { Thermometer, Wind, CloudRain, Droplets } from "lucide-react"
 
 interface CameraFeedProps {
@@ -7,9 +8,30 @@ interface CameraFeedProps {
   humidity: number
   co2Level: number
   phLevel: number
+  rpm: number
+  showCommandOverlay: boolean
+  commandOverlayText: string
 }
 
-export function CameraFeed({ temperature, humidity, co2Level, phLevel }: CameraFeedProps) {
+export function CameraFeed({
+  temperature,
+  humidity,
+  co2Level,
+  phLevel,
+  rpm,
+  showCommandOverlay,
+  commandOverlayText,
+}: CameraFeedProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    if (!videoRef.current) {
+      return
+    }
+    const nextRate = Math.max(0.9, Math.min(1.08, rpm / 12))
+    videoRef.current.playbackRate = Number(nextRate.toFixed(2))
+  }, [rpm])
+
   return (
     <div className="space-y-4">
       {/* Live Camera */}
@@ -19,6 +41,7 @@ export function CameraFeed({ temperature, humidity, co2Level, phLevel }: CameraF
         </div>
         <div className="relative aspect-video bg-black">
           <video
+            ref={videoRef}
             className="h-full w-full rounded-b-xl object-cover"
             src="/IMG_1374.mov"
             autoPlay
@@ -26,6 +49,13 @@ export function CameraFeed({ temperature, humidity, co2Level, phLevel }: CameraF
             loop
             playsInline
           />
+          {showCommandOverlay && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/35 backdrop-blur-[1px]">
+              <div className="rounded-lg border border-cyan-400/50 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-cyan-200 shadow-[0_0_24px_rgba(34,211,238,0.35)] animate-pulse">
+                {commandOverlayText}
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Camera Controls */}

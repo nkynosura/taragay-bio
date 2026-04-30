@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { BadgeCheck, BookOpenText, Clock3, FlaskConical, ShieldCheck } from "lucide-react"
 
 interface ProfilePageProps {
@@ -19,7 +20,7 @@ const profileConfig = {
   Musa: {
     fullName: "Musa Seyidoğlu",
     role: "Mekanik ve Sistem Mimarisi Sorumlusu",
-    permission: "Editor",
+    permission: "Admin",
     completedExperiments: 17,
     sessionHours: 214,
     education:
@@ -29,6 +30,22 @@ const profileConfig = {
 
 export function ProfilePage({ currentUserName }: ProfilePageProps) {
   const profile = profileConfig[currentUserName as keyof typeof profileConfig] ?? profileConfig.Nisa
+  const [liveSessionSeconds, setLiveSessionSeconds] = useState(profile.sessionHours * 3600)
+
+  useEffect(() => {
+    setLiveSessionSeconds(profile.sessionHours * 3600)
+  }, [profile.sessionHours])
+
+  useEffect(() => {
+    const ticker = setInterval(() => {
+      setLiveSessionSeconds((prev) => prev + 1)
+    }, 1000)
+    return () => clearInterval(ticker)
+  }, [])
+
+  const hours = String(Math.floor(liveSessionSeconds / 3600)).padStart(2, "0")
+  const minutes = String(Math.floor((liveSessionSeconds % 3600) / 60)).padStart(2, "0")
+  const seconds = String(liveSessionSeconds % 60).padStart(2, "0")
 
   return (
     <section className="space-y-6">
@@ -56,7 +73,7 @@ export function ProfilePage({ currentUserName }: ProfilePageProps) {
             <Clock3 className="h-4 w-4" />
             <p className="text-sm font-medium">Sistemde Kalma Süresi</p>
           </div>
-          <p className="mt-3 text-3xl font-semibold text-foreground">{profile.sessionHours} saat</p>
+          <p className="mt-3 text-3xl font-semibold text-foreground">{hours}:{minutes}:{seconds}</p>
         </div>
 
         <div className="rounded-xl border border-border bg-card/80 p-4 backdrop-blur">

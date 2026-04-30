@@ -19,6 +19,7 @@ interface ControlPanelProps {
   onRpmChange: (value: number) => void
   orientation: string
   onOrientationChange: (value: string) => void
+  onHardwareParameterChange?: (label: string) => void
 }
 
 export function ControlPanel({
@@ -36,6 +37,7 @@ export function ControlPanel({
   onRpmChange,
   orientation,
   onOrientationChange,
+  onHardwareParameterChange,
 }: ControlPanelProps) {
   return (
     <div className="space-y-4">
@@ -76,7 +78,10 @@ export function ControlPanel({
             min="0"
             max="100"
             value={irrigationFrequency}
-            onChange={(e) => onIrrigationFrequencyChange(parseInt(e.target.value))}
+            onChange={(e) => {
+              onIrrigationFrequencyChange(parseInt(e.target.value))
+              onHardwareParameterChange?.("Sulama sıklığı")
+            }}
             className="w-full h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-accent"
             style={{
               background: `linear-gradient(to right, #ff6b35 0%, #ff6b35 ${irrigationFrequency}%, #e0e0e0 ${irrigationFrequency}%, #e0e0e0 100%)`
@@ -97,7 +102,10 @@ export function ControlPanel({
               min="0"
               max="100"
               value={nutrientN}
-              onChange={(e) => onNutrientNChange(parseInt(e.target.value))}
+              onChange={(e) => {
+                onNutrientNChange(parseInt(e.target.value))
+                onHardwareParameterChange?.("Besin N")
+              }}
               className="flex-1 h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-accent"
               style={{
                 background: `linear-gradient(to right, #ff6b35 0%, #ff6b35 ${nutrientN}%, #e0e0e0 ${nutrientN}%, #e0e0e0 100%)`
@@ -112,7 +120,10 @@ export function ControlPanel({
               min="0"
               max="100"
               value={nutrientP}
-              onChange={(e) => onNutrientPChange(parseInt(e.target.value))}
+              onChange={(e) => {
+                onNutrientPChange(parseInt(e.target.value))
+                onHardwareParameterChange?.("Besin P")
+              }}
               className="flex-1 h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-accent"
               style={{
                 background: `linear-gradient(to right, #ff6b35 0%, #ff6b35 ${nutrientP}%, #e0e0e0 ${nutrientP}%, #e0e0e0 100%)`
@@ -127,7 +138,10 @@ export function ControlPanel({
               min="0"
               max="100"
               value={nutrientK}
-              onChange={(e) => onNutrientKChange(parseInt(e.target.value))}
+              onChange={(e) => {
+                onNutrientKChange(parseInt(e.target.value))
+                onHardwareParameterChange?.("Besin K")
+              }}
               className="flex-1 h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
               style={{
                 background: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${nutrientK}%, #e0e0e0 ${nutrientK}%, #e0e0e0 100%)`
@@ -198,7 +212,13 @@ export function ControlPanel({
           </div>
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-2">RPM</p>
+        <div className="mt-2 flex items-center justify-center gap-2">
+          <p className="text-center text-sm text-muted-foreground">RPM</p>
+          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.9)]" />
+            Motor Aktif
+          </span>
+        </div>
         
         <button className="w-full flex items-center justify-center gap-2 mt-2 py-2 bg-muted rounded-lg hover:bg-secondary transition-colors">
           <ChevronDown className="w-4 h-4 text-foreground" />
