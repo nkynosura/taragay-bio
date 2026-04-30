@@ -269,7 +269,7 @@ export default function BioreactorPortal() {
             <input
               value={usernameInput}
               onChange={(event) => setUsernameInput(event.target.value)}
-              placeholder="Kullanıcı adı (Nisa Nur Keklik / Musa Seyidoğlu)"
+              placeholder="Kullanıcı Adı"
               className="w-full rounded-lg border border-border bg-background/70 px-3 py-2 text-sm text-foreground outline-none ring-[#86bc25] focus:ring-2"
             />
             <input
