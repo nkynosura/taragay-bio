@@ -284,10 +284,6 @@ export default function BioreactorPortal() {
             </button>
           </div>
 
-          <div className="mt-4 rounded-lg border border-border/70 bg-background/40 p-3 text-xs text-muted-foreground">
-            <p>Nisa Nur Keklik / 4691</p>
-            <p>Musa Seyidoğlu / 4691</p>
-          </div>
         </section>
       </div>
     )
