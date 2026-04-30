@@ -16,7 +16,7 @@ const profileConfig = {
   },
   Musa: {
     fullName: "Musa Taragay",
-    role: "Biyoreaktör Süreç ve Veri Editörü",
+    role: "Mekanik ve Sistem Mimarisi",
     permission: "Editor",
     completedExperiments: 17,
     sessionHours: 214,
@@ -70,7 +70,7 @@ export function ProfilePage({ currentUserName }: ProfilePageProps) {
           <h3 className="text-sm font-semibold text-foreground">Eğitim Bilgisi</h3>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          Yalova Üniversitesi - Endüstri Mühendisliği, biyosistem optimizasyonu ve süreç tasarımı odaklı.
+          Yalova Üniversitesi - Makine Mühendisliği, biyosistem optimizasyonu ve süreç tasarımı odaklı.
         </p>
       </div>
     </section>
