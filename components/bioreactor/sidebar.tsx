@@ -19,16 +19,16 @@ export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
   return (
     <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col min-h-screen">
       {/* Logo */}
-      <div className="p-4 pb-3">
+      <div className="p-4 pb-2">
         <button
           onClick={() => onItemClick("anasayfa")}
-          className="block w-full rounded-xl border border-sidebar-border/70 bg-sidebar-accent/20 p-1 backdrop-blur transition-colors hover:bg-sidebar-accent/35"
+          className="block w-full rounded-xl border border-sidebar-border/70 bg-sidebar-accent/20 p-2 backdrop-blur transition-colors hover:bg-sidebar-accent/35"
           aria-label="Anasayfaya git"
         >
           <img
             src="/taragay-logo.png"
             alt="Taragay Bio Logo"
-            className="w-full h-auto object-contain"
+            className="h-[86px] w-full object-cover object-center"
           />
         </button>
       </div>

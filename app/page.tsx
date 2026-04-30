@@ -228,7 +228,11 @@ export default function BioreactorPortal() {
       <div className="flex min-h-screen items-center justify-center bg-background p-6">
         <section className="w-full max-w-md rounded-2xl border border-border bg-card/80 p-6 shadow-2xl backdrop-blur">
           <div className="mb-5 text-center">
-            <img src="/taragay-logo.png" alt="Taragay Bio Logo" className="mx-auto h-14 w-auto object-contain" />
+            <img
+              src="/taragay-logo.png"
+              alt="Taragay Bio Logo"
+              className="mx-auto w-56 max-w-full md:w-64 h-auto object-cover object-center"
+            />
             <h1 className="mt-4 text-2xl font-semibold text-foreground">Taragay-Bio Giriş</h1>
             <p className="mt-1 text-sm text-muted-foreground">Dashboard erişimi için oturum açın.</p>
           </div>
