@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Bug, Download, MessageSquareText, Orbit, Seedling, Settings2 } from "lucide-react"
+import { Bug, Download, MessageSquareText, Orbit, Settings2, Sprout } from "lucide-react"
 
 const quickStartSteps = [
   {
     title: "Tohum Hazırlığı ve Yerleştirme",
     description: "Arpa veya seçili tohumu steril kapsüle yerleştirip biyoreaktör yuvasına sabitleyin.",
-    icon: Seedling,
+    icon: Sprout,
   },
   {
     title: "Simülasyon Modu Seçimi",
