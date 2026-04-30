@@ -10,6 +10,7 @@ import { ControlPanel } from "@/components/bioreactor/control-panel"
 import { DataTable } from "@/components/bioreactor/data-table"
 import { ReportsPage } from "../components/bioreactor/reports-page"
 import { ProfilePage } from "@/components/bioreactor/profile-page"
+import { HelpPage } from "@/components/bioreactor/help-page"
 import { Menu, X } from "lucide-react"
 
 type UserName = "Nisa" | "Musa"
@@ -181,6 +182,8 @@ export default function BioreactorPortal() {
         return <ReportsPage />
       case "profil":
         return <ProfilePage currentUserName={currentUser ?? "Nisa"} />
+      case "yardim":
+        return <HelpPage />
       default:
         return renderComingSoonPage(activeMenuItem)
     }
