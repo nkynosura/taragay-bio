@@ -73,7 +73,7 @@ export function HelpPage() {
       </div>
 
       <div className="rounded-xl border border-border bg-card/70 p-5 backdrop-blur">
-        <h3 className="text-sm font-semibold text-[#86bc25]">Hızlı Başlatma Rehberi</h3>
+        <h3 className="text-sm font-semibold text-[#86bc25]">Hızlı Başlatma ve Sistem Kalibrasyon Rehberi</h3>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           {quickStartSteps.map((step, index) => {
             const Icon = step.icon

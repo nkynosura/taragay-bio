@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, FileText, User, HelpCircle } from "lucide-react"
+import { Home, FileText, User, HelpCircle, Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface SidebarProps {
@@ -11,6 +11,7 @@ interface SidebarProps {
 const menuItems = [
   { id: "anasayfa", label: "Anasayfa", icon: Home },
   { id: "raporlar", label: "Raporlar", icon: FileText },
+  { id: "telemetri", label: "Telemetri", icon: Activity },
   { id: "profil", label: "Profil", icon: User },
   { id: "yardim", label: "Yardım", icon: HelpCircle },
 ]

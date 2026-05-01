@@ -144,7 +144,7 @@ export function ControlPanel({
               }}
               className="flex-1 h-2 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
               style={{
-                background: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${nutrientK}%, #e0e0e0 ${nutrientK}%, #e0e0e0 100%)`
+                background: `linear-gradient(to right, #86bc25 0%, #86bc25 ${nutrientK}%, #e0e0e0 ${nutrientK}%, #e0e0e0 100%)`
               }}
             />
           </div>

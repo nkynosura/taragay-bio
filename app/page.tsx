@@ -9,6 +9,7 @@ import { CameraFeed } from "@/components/bioreactor/camera-feed"
 import { ControlPanel } from "@/components/bioreactor/control-panel"
 import { DataTable } from "@/components/bioreactor/data-table"
 import { ReportsPage } from "../components/bioreactor/reports-page"
+import { TelemetryPage } from "@/components/bioreactor/telemetry-page"
 import { ProfilePage } from "@/components/bioreactor/profile-page"
 import { HelpPage } from "@/components/bioreactor/help-page"
 import { Menu, X } from "lucide-react"
@@ -284,6 +285,7 @@ export default function BioreactorPortal() {
   const menuLabels: Record<string, string> = {
     anasayfa: "Anasayfa",
     raporlar: "Raporlar",
+    telemetri: "Telemetri",
     profil: "Profil",
     yardim: "Yardım",
   }
@@ -306,6 +308,8 @@ export default function BioreactorPortal() {
         return renderDashboard()
       case "raporlar":
         return <ReportsPage temperature={temperature} photoperiodHours={18} />
+      case "telemetri":
+        return <TelemetryPage logs={systemLogs} />
       case "profil":
         return <ProfilePage currentUserName={currentUser ?? "Nisa"} />
       case "yardim":

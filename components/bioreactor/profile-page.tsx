@@ -15,7 +15,7 @@ const profileConfig = {
     completedExperiments: 28,
     sessionHours: 316,
     education:
-      "Yalova Üniversitesi - Endüstri Mühendisliği. Operasyonel optimizasyon ve süreç yönetimi odaklı.",
+      "Yalova Üniversitesi - Endüstri Mühendisliği (Lisans 2. Sınıf). Operasyon, süreç yönetimi ve proje geliştirme odaklı.",
   },
   Musa: {
     fullName: "Musa Seyidoğlu",
@@ -24,7 +24,7 @@ const profileConfig = {
     completedExperiments: 17,
     sessionHours: 214,
     education:
-      "Yalova Üniversitesi - Makine Mühendisliği. Mekanik tasarım, 3D modelleme ve sistem mimarisi odaklı.",
+      "Yalova Üniversitesi - Makine Mühendisliği (Lisans 4. Sınıf). Mekanik tasarım, teknik çizim ve sistem mimarisi odaklı.",
   },
 }
 
