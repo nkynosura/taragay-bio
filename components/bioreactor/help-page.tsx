@@ -45,11 +45,11 @@ const faqItems = [
 
 const supportTeam = [
   {
-    name: "Musa Seyidoğlu",
+    name: "Sistem Analisti",
     title: "Mekanik ve Sistem Mimarisi",
   },
   {
-    name: "Nisa Nur Keklik",
+    name: "Analist",
     title: "Operasyon ve Süreç Yönetimi",
   },
 ]

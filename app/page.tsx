@@ -14,7 +14,7 @@ import { ProfilePage } from "@/components/bioreactor/profile-page"
 import { HelpPage } from "@/components/bioreactor/help-page"
 import { Menu, X } from "lucide-react"
 
-type UserName = "Nisa" | "Musa"
+type UserName = "Nisa"
 
 const users: Record<
   UserName,
@@ -28,14 +28,8 @@ const users: Record<
   Nisa: {
     password: "4691",
     role: "Admin",
-    fullName: "Nisa Nur Keklik",
-    loginAliases: ["Nisa", "Nisa Nur Keklik"],
-  },
-  Musa: {
-    password: "4691",
-    role: "Admin",
-    fullName: "Musa Seyidoğlu",
-    loginAliases: ["Musa", "Musa Seyidoğlu"],
+    fullName: "Analist",
+    loginAliases: ["Nisa", "nisa"],
   },
 }
 
@@ -67,8 +61,8 @@ export default function BioreactorPortal() {
   const [commandOverlayText, setCommandOverlayText] = useState("")
   const [systemNotice, setSystemNotice] = useState("")
   const [systemLogs, setSystemLogs] = useState<string[]>([
-    "Nisa Nur Keklik: Sistem dengeleme modu aktifleştirildi",
-    "Musa Seyidoğlu: Motor torku normalize edildi",
+    "Analist: Sistem dengeleme modu aktifleştirildi",
+    "Sistem Analisti: Motor torku normalize edildi",
     "Kontrol çekirdeği: Random Walk kalibrasyonu tamamlandı",
   ])
   
@@ -116,8 +110,8 @@ export default function BioreactorPortal() {
     criticalAlertCooldownRef.current = true
     setSystemNotice("UYARI: Termal Stabilizasyon Devreye Girdi")
     setSystemLogs((prev) => [
-      "Musa Seyidoğlu: Motor torku normalize edildi",
-      "Nisa Nur Keklik: Termal dengeleme protokolü devreye alındı",
+      "Sistem Analisti: Motor torku normalize edildi",
+      "Analist: Termal dengeleme protokolü devreye alındı",
       ...prev,
     ].slice(0, 8))
 
@@ -355,9 +349,8 @@ export default function BioreactorPortal() {
   }
 
   const handleSwitchUser = () => {
-    const nextUser = currentUser === "Nisa" ? "Musa" : "Nisa"
     setCurrentUser(null)
-    setUsernameInput(users[nextUser].fullName)
+    setUsernameInput("")
     setPasswordInput("")
     setAuthError("")
     setSidebarOpen(false)
@@ -406,7 +399,7 @@ export default function BioreactorPortal() {
     )
   }
 
-  const currentUserDisplayName = users[currentUser]?.fullName ?? "Nisa Nur Keklik"
+  const currentUserDisplayName = users[currentUser]?.fullName ?? "Analist"
   const hasCriticalAlert = temperature >= 24.75 || co2Level >= 1235
 
   return (

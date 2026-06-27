@@ -9,22 +9,12 @@ interface ProfilePageProps {
 
 const profileConfig = {
   Nisa: {
-    fullName: "Nisa Nur Keklik",
-    role: "Operasyon ve Süreç Yönetimi Sorumlusu",
+    fullName: "Analist",
+    role: "Sistem ve Veri Analisti",
     permission: "Admin",
     completedExperiments: 28,
     sessionHours: 316,
-    education:
-      "Yalova Üniversitesi - Endüstri Mühendisliği (Lisans 2. Sınıf). Operasyon, süreç yönetimi ve proje geliştirme odaklı.",
-  },
-  Musa: {
-    fullName: "Musa Seyidoğlu",
-    role: "Mekanik ve Sistem Mimarisi Sorumlusu",
-    permission: "Admin",
-    completedExperiments: 17,
-    sessionHours: 214,
-    education:
-      "Yalova Üniversitesi - Makine Mühendisliği (Lisans 4. Sınıf). Mekanik tasarım, teknik çizim ve sistem mimarisi odaklı.",
+    education: "Taragay-Bio Veri Analizi ve Süreç Kontrolü.",
   },
 }
 
