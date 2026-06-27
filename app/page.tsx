@@ -14,7 +14,7 @@ import { ProfilePage } from "@/components/bioreactor/profile-page"
 import { HelpPage } from "@/components/bioreactor/help-page"
 import { Menu, X } from "lucide-react"
 
-type UserName = "Nisa"
+type UserName = "Nisa" | "Analist1"
 
 const users: Record<
   UserName,
@@ -30,6 +30,12 @@ const users: Record<
     role: "Admin",
     fullName: "Analist",
     loginAliases: ["Nisa", "nisa"],
+  },
+  Analist1: {
+    password: "0.16Ay",
+    role: "Editor",
+    fullName: "Test Analisti",
+    loginAliases: ["Analist1", "analist1"],
   },
 }
 

@@ -16,6 +16,14 @@ const profileConfig = {
     sessionHours: 316,
     education: "Taragay-Bio Veri Analizi ve Süreç Kontrolü.",
   },
+  Analist1: {
+    fullName: "Test Analisti",
+    role: "Demo ve Değerlendirme Kullanıcısı",
+    permission: "Editor",
+    completedExperiments: 12,
+    sessionHours: 48,
+    education: "Taragay-Bio Yer Kontrol İstasyonu demo erişimi.",
+  },
 }
 
 export function ProfilePage({ currentUserName }: ProfilePageProps) {
