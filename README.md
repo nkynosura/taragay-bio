@@ -56,11 +56,11 @@ Projeyi yerel bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 
 Proje aşağıdaki çekirdek ekip tarafından geliştirilmektedir:
 
-*   **Musa Seyidoğlu** - Makine Mühendisliği (Lisans 4. Sınıf)
+*   **Analist1** - Makine Mühendisliği (Lisans 4. Sınıf)
     *   *Sorumluluklar:* Mekanik tasarım, teknik çizim, sistem mimarisi ve RPM stabilizasyonu.
-*   **Nisa Nur Keklik** - Endüstri Mühendisliği (Lisans 2. Sınıf)
+*   **Test Analisti** - Endüstri Mühendisliği (Lisans 2. Sınıf)
     *   *Sorumluluklar:* Sistem analizi, operasyon, süreç yönetimi, arayüz organizasyonu ve proje geliştirme.
-
+*   **Test Analisti2** - Ziraat Mühendisliği (Mezun)
 ---
 
 ## 📁 Proje Klasör Yapısı
